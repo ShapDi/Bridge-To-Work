@@ -1,9 +1,12 @@
 from abc import ABC, abstractmethod
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 from bs4 import BeautifulSoup
 import requests
 import selenium
-
+from models.create_schema import LinkBase
 from parsing_methods import SeleniumParsingMethod,RequestsParsingMethod
+from models.engines import engine
 
 
 class LinkCollectionAggregatorAbstract(ABC):
@@ -19,21 +22,27 @@ class LinkCollectionAggregatorHH(LinkCollectionAggregatorAbstract):
     def __init__(self,super_url):
         self._super_url = super_url
 
-    def acquisition_links(self,urls):
-        pass
+    def acquisition_links(self):
+        with Session(engine) as ses:
+            for i in self.collections_link:
+                stmt = select(LinkBase.link == f"{i}")
+                rez = ses.scalar(stmt)
+                if rez == []:
+                    continue
+                else:
+                    pass
+
     def getting_links(self):
-        page = RequestsParsingMethod(self._super_url).receipt()
-        soup = BeautifulSoup(page.text,"lxml")
-        number_pages =  0
-        for i in number_pages:
+        def get_numb_pages()->int:
+            page = RequestsParsingMethod(self._super_url).receipt()
+            soup = BeautifulSoup(page.text,"lxml")
+            number_pages = soup
+            return number_pages
+
+        for i in get_numb_pages():
             page = RequestsParsingMethod(self._super_url + f"").receipt()
             self.collections_link = self.collections_link + []
-
-
-
-
-
-
+        self.acquisition_links()
 
 
 class LinkCollectionAggregatorSJ(LinkCollectionAggregatorAbstract):
