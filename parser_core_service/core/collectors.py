@@ -72,7 +72,8 @@ class Aggregator():
     def get_data(self):
         for i in self.getdatabehavior:
             pass
-
+    def __repr__(self):
+        return f"{self._profession}"
 
 
 if __name__ == "__main__":

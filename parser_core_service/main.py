@@ -1,16 +1,23 @@
-import core.collectors
+
+from core.collectors import Aggregator
 class Controller():
     set_aggregators = []
-    def initialization_aggregator(self):
-        pass
+    @staticmethod
+    def initialization_aggregator(profession:str,subprofession:list):
+        new_aggregator = Aggregator(profession= profession,subprofession = subprofession)
+        Controller.set_aggregators.append(new_aggregator)
+        Controller.launch_aggregator(new_aggregator)
 
-    def launch_aggregator(self):
-        pass
+    @staticmethod
+    def start_aggregator(aggregator = set_aggregators):
+        if type(aggregator) != list:
+            for i in aggregator:
+                i.get_links
+        else:
+            aggregator.get_links
 
-    def removal_aggregator(self):
-        pass
-
-    def start_aggregators(self):
+    @staticmethod
+    def removal_aggregator():
         pass
 
 
