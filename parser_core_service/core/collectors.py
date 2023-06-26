@@ -1,13 +1,15 @@
 from abc import ABC, abstractmethod
+
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from bs4 import BeautifulSoup
 import requests
 import selenium
-from models.create_schema import LinkBase
-from parsing_methods import SeleniumParsingMethod,RequestsParsingMethod
-from models.engines import engine
 
+from .parsing_methods import SeleniumParsingMethod,RequestsParsingMethod
+from models.engines import engine
+from models.create_schema import LinkBase
 
 class LinkCollectionAggregatorAbstract(ABC):
     @abstractmethod
@@ -63,7 +65,6 @@ class InformationAggregatorAbstract(ABC):
 class Aggregator():
     def __init__(self, aggregatorbehavior:LinkCollectionAggregatorAbstract):
         self._aggregatorbehavior = aggregatorbehavior
-
 
 
 if __name__ == "__main__":
