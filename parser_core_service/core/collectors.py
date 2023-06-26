@@ -1,11 +1,8 @@
 from abc import ABC, abstractmethod
 
-
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from bs4 import BeautifulSoup
-import requests
-import selenium
 
 from .parsing_methods import SeleniumParsingMethod,RequestsParsingMethod
 from models.engines import engine
@@ -63,8 +60,19 @@ class InformationAggregatorAbstract(ABC):
 
 
 class Aggregator():
-    def __init__(self, aggregatorbehavior:LinkCollectionAggregatorAbstract):
-        self._aggregatorbehavior = aggregatorbehavior
+    aggregatorbehavior = [LinkCollectionAggregatorHH,LinkCollectionAggregatorSJ,LinkCollectionAggregatorRR]
+    getdatabehavior = []
+    def __init__(self, profession:str,subprofession:list):
+        self._profession =  profession
+        self._subprofession = subprofession
+
+    def get_links(self):
+        for i in self.aggregatorbehavior:
+            i.getting_links
+    def get_data(self):
+        for i in self.getdatabehavior:
+            pass
+
 
 
 if __name__ == "__main__":
