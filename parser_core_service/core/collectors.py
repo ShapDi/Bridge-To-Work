@@ -15,8 +15,9 @@ class LinkCollectionAggregatorAbstract(ABC):
 
 
 class LinkCollectionAggregatorHH(LinkCollectionAggregatorAbstract):
-    def __init__(self,subprofession):
+    def __init__(self,subprofession:str,aggregator_type:dict):
         self._subprofession = subprofession
+        self._aggregator_type = aggregator_type
     def getting_links(self)->list:
         def get_numb_pages()->int:
             page = RequestsParsingMethod(self.super_url).receipt()
@@ -47,18 +48,19 @@ class InformationAggregatorAbstract(ABC):
 
 class Aggregator():
     aggregatorbehavior = {LinkCollectionAggregatorHH:get_data_hh(),LinkCollectionAggregatorSJ:get_data_sj(),LinkCollectionAggregatorRR:get_data_rr()}
-    getdatabehavior = []
+    getdatabehavior = {}
     def __init__(self, profession:str,subprofessions:list):
         self._profession =  profession
         self._subprofessions = subprofessions
 
     def get_links(self):
-        for i in self.aggregatorbehavior:
+        for aggregator_type,data_search in self.aggregatorbehavior.items():
            for i in self._subprofessions:
-                d = i(self._subprofession).getting_links()
+                d = aggregator_type(i, data_search).getting_links()
     def get_data(self):
-        for i in self.getdatabehavior:
-            pass
+        for databehavior_type,data_search in self.getdatabehavior.items():
+            for i in self._subprofessions:
+                d = databehavior_type(i, data_search)
     def __repr__(self):
         return f"{self._profession}"
 

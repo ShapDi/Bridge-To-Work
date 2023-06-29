@@ -5,8 +5,10 @@ class TypicalRequests():
 
 
 def get_data_hh() -> dict:
-    pass
+        pass
+
 def get_data_sj() -> dict:
-    pass
+        pass
+
 def get_data_rr() -> dict:
-    pass
+        pass
