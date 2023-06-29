@@ -4,13 +4,13 @@ class Controller():
     set_aggregators = []
     @staticmethod
     def initialization_aggregator(profession:str,subprofession:list):
-        new_aggregator = Aggregator(profession= profession,subprofession = subprofession)
+        new_aggregator = Aggregator(profession = profession,subprofession = subprofession)
         Controller.set_aggregators.append(new_aggregator)
         Controller.launch_aggregator(new_aggregator)
 
     @staticmethod
     def start_aggregator(aggregator = set_aggregators):
-        if type(aggregator) != list:
+        if type(aggregator) == list:
             for i in aggregator:
                 i.get_links
         else:
@@ -19,6 +19,10 @@ class Controller():
     @staticmethod
     def removal_aggregator():
         pass
+
+
+def main():
+    pass
 
 
 print("initialization")

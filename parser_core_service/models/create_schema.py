@@ -10,7 +10,7 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
 
-from .engines import engine
+from engines import engine
 class Base(DeclarativeBase):
     pass
 
@@ -30,7 +30,7 @@ class Service(Base):
     __tablename__ = "services"
     id: Mapped[int] = mapped_column(primary_key = True)
     name: Mapped[str] = mapped_column(String(100))
-
+    link: Mapped[str] = mapped_column(String(100))
 
 
 class LinkBase(Base):

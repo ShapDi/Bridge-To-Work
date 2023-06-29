@@ -21,12 +21,13 @@ with Session(engine) as ses:
 
 
     def service_data():
-        d = ["hh", "sj", "rabotars"]
-        for i in d:
-            n = Service(name=f"{i}")
+        d = {"hh":"https://hh.ru/", "sj":"https://www.superjob.ru/", "rabotars":"https://www.rabota.ru/"}
+        for i,n in d.items():
+            n = Service(name=f"{i}",link = f"{n}")
             ses.add(n)
             ses.commit()
 
+
 if __name__ == "__main__":
-    service_data()
     prof_data()
+
