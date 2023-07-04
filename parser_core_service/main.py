@@ -19,6 +19,11 @@ class Controller():
     @staticmethod
     def removal_aggregator():
         pass
+    @classmethod
+    def god(element, comand:str):
+
+
+
 
 
 def main():

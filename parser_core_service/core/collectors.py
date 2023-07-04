@@ -20,16 +20,20 @@ class LinkCollectionAggregatorHH(LinkCollectionAggregatorAbstract):
         self._aggregator_link = aggregator_link
         self._data_link = data_link
     def getting_links(self)->list:
+        colections = []
         def get_numb_pages()->int:
-            page = RequestsParsingMethod(self.super_url).receipt()
+            page = RequestsParsingMethod(self._aggregator_link + f"/search/vacancy?text={self._subprofession}").receipt()
             soup = BeautifulSoup(page.text,"lxml")
-            number_pages = soup
+            number_pages = int(soup.find("div",class_ = "bloko-gap bloko-gap_top").find_all("span")[-1].text)
             return number_pages
 
         for i in get_numb_pages():
-            page = RequestsParsingMethod(self.super_url + f"").receipt()
-            self.collections_link = self.collections_link + []
-        self.acquisition_links()
+            page = RequestsParsingMethod(self._aggregator_link + f"?text=pathon&salary=&page={i}&ored_clusters=true").receipt()
+            soup = BeautifulSoup(page.text, "lxml")
+            link = soup.find_all("a", class_ = "serp-item__title")
+            colections.append(link)
+
+        print(colections)
 
 
 class LinkCollectionAggregatorSJ(LinkCollectionAggregatorAbstract):

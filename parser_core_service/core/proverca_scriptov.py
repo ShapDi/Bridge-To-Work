@@ -1,5 +1,5 @@
-from abc import ABC,abstractmethod
 import requests
+from bs4 import BeautifulSoup
 
 cookies = {
     'hhuid': 'D3UFMNbHr7x4p2Q23WErzQ--',
@@ -59,25 +59,12 @@ params = {
     'ored_clusters': 'true',
 }
 
-class ParsingMethodAbstract(ABC):
-    pass
 
-class APIParsingMethod(ParsingMethodAbstract):
-    pass
-
-class SeleniumParsingMethod(ParsingMethodAbstract):
-    pass
-
-class RequestsParsingMethod(ParsingMethodAbstract):
-    def __init__(self, url):
-        self._url = url
-    def receipt(self):
-        response = requests.get(self._url,params=params, cookies=cookies, headers=headers)
-        return response
-
-class ParsingMethod():
-    pass
+def get_numb_pages() -> int:
+    page = requests.get("https://hh.ru/" + "/search/vacancy?text=", params=params, cookies=cookies, headers=headers)
+    soup = BeautifulSoup(page.text, "lxml")
+    number_pages = soup.find("div", class_ = "bloko-gap bloko-gap_top").find_all("span")[-3].text
+    return number_pages
 
 
-
-
+print(get_numb_pages())
