@@ -57,11 +57,19 @@ class Aggregator():
     def __init__(self, profession:str,subprofessions:list):
         self._profession =  profession
         self._subprofessions = subprofessions
-
     def get_links(self):
-        for aggregator_type,data_search in self.aggregatorbehavior.items():
-           for i in self._subprofessions:
-                d = aggregator_type(i,data_search[0],data_search[1]).getting_links()
+        list_link_hh = {}
+        list_link_sj = {}
+        list_link_rr = {}
+        for i in self._subprofessions:
+                hh = self.aggregatorbehavior.keys()[0](i,self.aggregatorbehavior.values()[0][0],self.aggregatorbehavior.values()[0][1]).getting_links()
+                sj = self.aggregatorbehavior.keys()[1](i,self.aggregatorbehavior.values()[1][0],self.aggregatorbehavior.values()[1][1]).getting_links()
+                rr = self.aggregatorbehavior.keys()[2](i,self.aggregatorbehavior.values()[2][0],self.aggregatorbehavior.values()[2][1]).getting_links()
+                list_link_hh[i] = hh
+                list_link_sj[i] = sj
+                list_link_rr[i] = rr
+        return list_link_hh, list_link_sj, list_link_rr
+
     def get_data(self):
         for databehavior_type,data_search in self.getdatabehavior.items():
             for i in self._subprofessions:

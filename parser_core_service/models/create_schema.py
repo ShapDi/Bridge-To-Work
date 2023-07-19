@@ -20,10 +20,10 @@ class ParserElement(Base):
     id: Mapped[int] = mapped_column(primary_key = True)
     name_element: Mapped[str] = mapped_column(String(20))
     tag: Mapped[str] = mapped_column(String(20))
-    class_html: Mapped[str] = mapped_column(String(125))
+    class_html: Mapped[str] = mapped_column(String(300))
     CSS_selector: Mapped[str | None]
     Xpath: Mapped[str | None]
-    serviece: Mapped[str] = mapped_column(ForeignKey("services.id"))
+    serviece: Mapped[int] = mapped_column(ForeignKey("services.id"))
 
 
 class Service(Base):
