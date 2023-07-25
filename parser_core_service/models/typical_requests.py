@@ -1,8 +1,8 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from engines import engine
+from .engines import engine
 
-from create_schema import ParserElement, Service
+from .create_schema import ParserElement, Service, Professions, Subprofessions
 
 
 def get_session():
@@ -16,17 +16,29 @@ def get_data_package(session = get_session()) -> dict:
     package = {}
     for i in session.execute(back):
         package[i[1]] = {"god_link": i[2]}
-    print(package)
     back_two = select(ParserElement).where(ParserElement.serviece == 1).except_all()
     d = list(ParserElement.__dict__["__annotations__"].keys())
     for i in session.execute(back_two):
-        package["hh"][i[1]] = {d[2]: i[2], d[3]: i[3], d[4]: i[4], d[5]: i[5]}
+        package["hh"][i[1]] = {d[2]: i[2]}
     back_two = select(ParserElement).where(ParserElement.serviece == 2).except_all()
-    for i in session.execute(back_two):
-        package["sj"][i[1]] = {d[2]: i[2], d[3]: i[3], d[4]: i[4], d[5]: i[5]}
-    back_two = select(ParserElement).where(ParserElement.serviece == 3).except_all()
-    for i in session.execute(back_two):
-        package["rabotars"][i[1]] = {d[2]: i[2], d[3]: i[3], d[4]: i[4], d[5]: i[5]}
+    # for i in session.execute(back_two):
+    #     package["sj"][i[1]] = {d[2]: i[2], d[3]: i[3], d[4]: i[4], d[5]: i[5]}
+    # back_two = select(ParserElement).where(ParserElement.serviece == 3).except_all()
+    # for i in session.execute(back_two):
+    #     package["rabotars"][i[1]] = {d[2]: i[2], d[3]: i[3], d[4]: i[4], d[5]: i[5]}
+    return package
+
+
+def get_data_profession(session = get_session()):
+    package = {}
+    stmt = select(Professions.name, Subprofessions.name).join_from(Professions, Subprofessions).except_all()
+    for i in session.execute(stmt).all():
+        if package.get(i[0]) == None:
+            package[i[0]] = [i[1]]
+        else:
+            n = package.get(i[0])
+            n.append(i[1])
+            package[i[0]] = n
     return package
 
 
@@ -59,3 +71,5 @@ if __name__ == "__main__":
 #         pass
 #
 # get_main_link_hh()
+
+

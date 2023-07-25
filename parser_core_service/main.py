@@ -1,35 +1,39 @@
-from models.typical_requests import get_data_package
+from models.typical_requests import get_data_package, get_data_profession
 from core.collectors import Aggregator
 class Controller():
-    DATAPACKAGE = get_data_package()
     set_aggregators = []
-    @staticmethod
-    def initialization_aggregator(profession:str,subprofession:list):
-        new_aggregator = Aggregator(profession = profession,subprofession = subprofession)
-        Controller.set_aggregators.append(new_aggregator)
 
-    @staticmethod
-    def start_aggregator(aggregator = set_aggregators):
-        if type(aggregator) == list:
-            for i in aggregator:
-                i.get_links
-        else:
-            aggregator.get_links
+    def __init__(self, dataprofession:dict, datapackage:dict):
+        self._dataprofession = dataprofession
+        self._datapackage = datapackage
 
-    @staticmethod
-    def removal_aggregator():
+
+
+    def initialization_aggregator(self):
+        for profession,subprofesson in self._dataprofession.items():
+            self.set_aggregators.append(Aggregator(profession,subprofesson,self._datapackage))
+        for i in self.set_aggregators:
+            i.initialization_agregators()
+
+    def start_aggregator(self):
+        for i in self.set_aggregators:
+            d = i.get_links()
+
+
+    def removal_aggregator(self):
         pass
-    @classmethod
-    def god(element, comand:str):
-        pass
-
-
-
 
 
 def main():
-    pass
+    # get_data_profession(),
+    core_comtroller = Controller(get_data_profession(),get_data_package())
+    core_comtroller.initialization_aggregator()
+    core_comtroller.start_aggregator()
 
 
-print("initialization")
+
+
+if __name__ == "__main__":
+    main()
+
 

@@ -10,7 +10,7 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
 
-from engines import engine
+from .engines import engine
 class Base(DeclarativeBase):
     pass
 
@@ -19,9 +19,6 @@ class ParserElement(Base):
     __tablename__ = "parser_element"
     id: Mapped[int] = mapped_column(primary_key = True)
     name_element: Mapped[str] = mapped_column(String(20))
-    tag: Mapped[str] = mapped_column(String(20))
-    class_html: Mapped[str] = mapped_column(String(300))
-    CSS_selector: Mapped[str | None]
     Xpath: Mapped[str | None]
     serviece: Mapped[int] = mapped_column(ForeignKey("services.id"))
 

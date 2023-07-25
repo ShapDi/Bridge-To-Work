@@ -1,79 +1,84 @@
 from abc import ABC, abstractmethod
+from .parsing_methods import RequestsParsingMethod
 
-from sqlalchemy import select
-from sqlalchemy.orm import Session
-from bs4 import BeautifulSoup
 
-from .parsing_methods import SeleniumParsingMethod,RequestsParsingMethod
-from models.engines import engine
-from models.create_schema import LinkBase, Service
-from models.typical_requests import get_main_link_hh,get_main_link_sj,get_main_link_rr, get_data_hh,get_data_sj,get_data_rr
+
+
 class LinkCollectionAggregatorAbstract(ABC):
     @abstractmethod
-    def getting_links(self):pass
-
+    def getting_links(self): pass
 
 
 class LinkCollectionAggregatorHH(LinkCollectionAggregatorAbstract):
-    def __init__(self,subprofession:str,aggregator_link:str,data_link:dict):
+    def __init__(self, subprofession: str,datapackage: dict):
         self._subprofession = subprofession
-        self._aggregator_link = aggregator_link
-        self._data_link = data_link
-    def getting_links(self)->list:
-        colections = []
-        def get_numb_pages()->int:
-            page = RequestsParsingMethod(self._aggregator_link + f"/search/vacancy?text={self._subprofession}").receipt()
-            soup = BeautifulSoup(page.text,"lxml")
-            number_pages = int(soup.find("div",class_ = "bloko-gap bloko-gap_top").find_all("span")[-1].text)
-            return number_pages
+        self._datapackage = datapackage
+        element = []
 
-        for i in get_numb_pages():
-            page = RequestsParsingMethod(self._aggregator_link + f"?text=pathon&salary=&page={i}&ored_clusters=true").receipt()
-            soup = BeautifulSoup(page.text, "lxml")
-            link = soup.find_all("a", class_ = "serp-item__title")
-            colections.append(link)
+    # Данная функция должна возращать словарь с ключем hh и списком
+    def getting_links(self) -> dict:
 
-        print(colections)
+        col_page = RequestsParsingMethod(url = f"https://hh.ru/search/vacancy?text={self._subprofession}", elements=["""/html/body/div/div/div/div/div/div/div/main/div/div/span/span/a/span"""]).get_element()
+        element = RequestsParsingMethod(url = f"https://hh.ru/search/vacancy?text={self._subprofession}", elements=["""/html/body/div/div/div/div/div/div/div/main/div/div/div/div/div/div/h3/span/a/@href"""]).get_element()
+        return element
+
+
 
 
 class LinkCollectionAggregatorSJ(LinkCollectionAggregatorAbstract):
+    def __init__(self, subprofession: str,datapackage: dict):
+        self._subprofession = subprofession
+        self._datapackage = datapackage
     pass
 
+
 class LinkCollectionAggregatorRR(LinkCollectionAggregatorAbstract):
-    pass
+    def __init__(self, subprofession: str,datapackage: dict):
+        self._subprofession = subprofession
+        self._datapackage = datapackage
+
 
 class InformationAggregatorAbstract(ABC):
     @abstractmethod
-    def get_text(self):pass
+    def get_text(self): pass
 
     @abstractmethod
-    def get_salary(self):pass
+    def get_salary(self): pass
 
+
+class InformationAggregatorHH(InformationAggregatorAbstract):
+    pass
 
 
 class Aggregator():
-    aggregatorbehavior = {LinkCollectionAggregatorHH:[get_main_link_hh(),],LinkCollectionAggregatorSJ:[get_main_link_sj()],LinkCollectionAggregatorRR:[get_main_link_rr()]}
-    getdatabehavior = {}
-    def __init__(self, profession:str,subprofessions:list):
-        self._profession =  profession
+    SET_aggregatorbehavior = [LinkCollectionAggregatorHH, LinkCollectionAggregatorSJ, LinkCollectionAggregatorSJ]
+    SET_infoaggregatorbehavior = []
+    SET_aggregators = {}
+    def __init__(self, profession: str, subprofessions: list, datapackage: dict):
+        self._profession = profession
         self._subprofessions = subprofessions
-    def get_links(self):
-        list_link_hh = {}
-        list_link_sj = {}
-        list_link_rr = {}
-        for i in self._subprofessions:
-                hh = self.aggregatorbehavior.keys()[0](i,self.aggregatorbehavior.values()[0][0],self.aggregatorbehavior.values()[0][1]).getting_links()
-                sj = self.aggregatorbehavior.keys()[1](i,self.aggregatorbehavior.values()[1][0],self.aggregatorbehavior.values()[1][1]).getting_links()
-                rr = self.aggregatorbehavior.keys()[2](i,self.aggregatorbehavior.values()[2][0],self.aggregatorbehavior.values()[2][1]).getting_links()
-                list_link_hh[i] = hh
-                list_link_sj[i] = sj
-                list_link_rr[i] = rr
-        return list_link_hh, list_link_sj, list_link_rr
+        self._datapackage = datapackage
 
-    def get_data(self):
-        for databehavior_type,data_search in self.getdatabehavior.items():
-            for i in self._subprofessions:
-                d = databehavior_type(i, data_search)
+
+    def initialization_agregators(self):
+        for i in self._subprofessions:
+            self.SET_aggregators[i] = [
+                LinkCollectionAggregatorHH(i,self._datapackage),
+                # LinkCollectionAggregatorSJ(i,self._datapackage),
+                # LinkCollectionAggregatorRR(i,self._datapackage),
+            ]
+
+
+    def get_links(self) -> dict:
+        link_colectors = {}
+        for i,n in self.SET_aggregators.items():
+            resalt_serch = (list(map(lambda i: i.getting_links(), n)))
+
+        return link_colectors
+
+    def get_info(self):
+        pass
+
     def __repr__(self):
         return f"{self._profession}"
 

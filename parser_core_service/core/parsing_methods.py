@@ -1,4 +1,8 @@
 from abc import ABC,abstractmethod
+import scrapy
+from bs4 import BeautifulSoup
+
+from lxml import etree, html
 import requests
 
 cookies = {
@@ -52,31 +56,35 @@ headers = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 OPR/99.0.0.0',
 }
 
-params = {
-    'text': 'python',
-    'from': 'suggest_post',
-    'salary': '',
-    'ored_clusters': 'true',
-}
 
-class ParsingMethodAbstract(ABC):
+
+
+class APIParsingMethod():
     pass
 
-class APIParsingMethod(ParsingMethodAbstract):
+class SeleniumParsingMethod():
     pass
+class RequestsParsingMethod():
 
-class SeleniumParsingMethod(ParsingMethodAbstract):
-    pass
-
-class RequestsParsingMethod(ParsingMethodAbstract):
-    def __init__(self, url):
+    def __init__(self, url:str, elements:list):
         self._url = url
-    def receipt(self):
-        response = requests.get(self._url,params=params, cookies=cookies, headers=headers)
-        return response
+        self._elements = elements
 
-class ParsingMethod():
-    pass
+
+    def get_element(self):
+        page = requests.get(self._url, cookies=cookies, headers=headers)
+        soup = BeautifulSoup(page.content, "html.parser")
+        dom = etree.HTML(str(soup))
+        list_element = []
+        for i in self._elements:
+            try:
+                list_element.append(list(map(lambda i: i.text, (dom.xpath(i)))))
+            except:
+                list_element.append(dom.xpath(i))
+        return list_element[0]
+
+
+
 
 
 
