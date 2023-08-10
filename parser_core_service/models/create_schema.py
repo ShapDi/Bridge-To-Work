@@ -9,12 +9,12 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
+
 from .engines import engine
 
 
 class Base(DeclarativeBase):
     pass
-
 
 class ParserElement(Base):
     __tablename__ = "parser_element"
@@ -24,20 +24,37 @@ class ParserElement(Base):
     serviece: Mapped[int] = mapped_column(ForeignKey("services.id"))
 
 
+class SityNames(Base):
+    __tablename__ = "сity_collection"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(40))
+
+
 class Service(Base):
     __tablename__ = "services"
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(100))
-    link: Mapped[str] = mapped_column(String(100))
 
 
 class LinkBase(Base):
     __tablename__ = "link_base"
     id: Mapped[int] = mapped_column(primary_key=True)
+    name:Mapped[str] = mapped_column(String(40))
     link: Mapped[str] = mapped_column(String(255))
+    experience:Mapped[str] = mapped_column(String(30))
+    pay:Mapped[int]
+    country:Mapped[str] = mapped_column(String(50))
+    сity:Mapped[str] = mapped_column(String(50))
+    employment:Mapped[str] = mapped_column(String(50))
+    schedule:Mapped[str] = mapped_column(String(50))
+    Text:Mapped[str]
     subprofession_id: Mapped[int] = mapped_column(ForeignKey("subprofessions.id"))
     date: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     service_id: Mapped[int] = mapped_column(ForeignKey("services.id"))
+
+
+
+
 
 
 class Subprofessions(Base):
@@ -56,8 +73,7 @@ class Professions(Base):
 
 
 def main():
-    Base.metadata.drop_all(bind=engine)
-
+    Base.metadata.create_all(bind=engine)
 
 if __name__ == "__main__":
     main()
