@@ -1,3 +1,5 @@
+import logging
+
 from models.typical_requests import get_data_package, get_data_profession
 from core.collectors import Aggregator
 
@@ -20,8 +22,9 @@ class Controller():
     def start_aggregator(self):
         for i in self.set_aggregators:
             d = i.get_links()
-            with open("file.txt","w") as file:
-                file.write(d)
+            logging.warning(d)
+            # with open("file.txt","w") as file:
+            #     file.write(d)
 
 
 

@@ -19,39 +19,33 @@ class LinkCollectionAggregatorHH(LinkCollectionAggregatorAbstract):
     def __init__(self, subprofession: str, datapackage: dict):
         self._subprofession = subprofession
         self._datapackage = datapackage
-        element = []
 
-    # Данная функция должна возращать словарь с ключем hh и списком
     def getting_links(self) -> dict:
-        links = {}
+        element = []
         for sity in self._datapackage["sity"]:
+            links = {}
             col_page = RequestsParsingMethod(url=f"https://hh.ru/search/vacancy?text={self._subprofession}+{sity}",
                                              elements=self._datapackage['Xpath']['page_number']).get_element()
             if col_page[0] == "Нет элементов":
                 col_page[0] = 1
-            col =[]
+            col = []
             for i in range(1, int(col_page[0])+1):
                 element = RequestsParsingMethod(url=f"https://hh.ru/search/vacancy?text={self._subprofession}+{sity}&page={i}",
                                                 elements=self._datapackage['Xpath']['link']).get_element()
                 col = col + element
             links[sity] = col
-        logging.warning(links)
-        return links
-
+            logging.warning(links)
+            yield links
 
 class LinkCollectionAggregatorSJ(LinkCollectionAggregatorAbstract):
     def __init__(self, subprofession: str, datapackage: dict):
         self._subprofession = subprofession
         self._datapackage = datapackage
 
-    pass
-
-
 class LinkCollectionAggregatorRR(LinkCollectionAggregatorAbstract):
     def __init__(self, subprofession: str, datapackage: dict):
         self._subprofession = subprofession
         self._datapackage = datapackage
-
 
 class InformationAggregatorAbstract(ABC):
     @abstractmethod
@@ -78,19 +72,16 @@ class Aggregator():
     def initialization_agregators(self):
         for i in self._subprofessions:
             self.SET_aggregators[i] = [
-                LinkCollectionAggregatorHH(i, self._datapackage.get("hh")),
+                LinkCollectionAggregatorHH(i, self._datapackage.get("hh")).getting_links(),
                 # LinkCollectionAggregatorSJ(i,self._datapackage),
                 # LinkCollectionAggregatorRR(i,self._datapackage),
             ]
-
-    def get_links(self) -> dict:
-        link_colectors = {}
+    def get_links(self):
         for i, n in self.SET_aggregators.items():
-            resalt_serch = list(map(lambda i: i.getting_links(), n))
-            link_colectors[i] = resalt_serch
-            logging.warning(link_colectors)
+            link_colectors = {i: {"hh": {list(hh_data.keys())[0]: list(hh_data.values())[0]},
+                                "sj": {list(sj_data.key())[0]: list(sj_data.values())[0]},
+                                "rr": {list(rr_data.key())[0]: list(rr_data.values())[0]}} for hh_data,sj_data,rr_data in n[0],n[1],n[2]}
         return link_colectors
-
     def get_info(self):
         pass
 
