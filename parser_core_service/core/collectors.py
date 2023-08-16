@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from .parsing_methods import RequestsParsingMethod
 import logging
 
+
 class Сleaner():
     def __init__(self, mass_col_old, mass_col_new):
         self._mass_col_old = mass_col_old
@@ -9,6 +10,7 @@ class Сleaner():
 
     def proverca(self):
         pass
+
 
 class LinkCollectionAggregatorAbstract(ABC):
     @abstractmethod
@@ -20,32 +22,81 @@ class LinkCollectionAggregatorHH(LinkCollectionAggregatorAbstract):
         self._subprofession = subprofession
         self._datapackage = datapackage
 
+    @staticmethod
+    def pagination_check():
+        for i in range(1, 100):
+            page = i
+            yield page
+
     def getting_links(self) -> dict:
-        element = []
         for sity in self._datapackage["sity"]:
             links = {}
-            col_page = RequestsParsingMethod(url=f"https://hh.ru/search/vacancy?text={self._subprofession}+{sity}",
-                                             elements=self._datapackage['Xpath']['page_number']).get_element()
-            if col_page[0] == "Нет элементов":
-                col_page[0] = 1
             col = []
-            for i in range(1, int(col_page[0])+1):
-                element = RequestsParsingMethod(url=f"https://hh.ru/search/vacancy?text={self._subprofession}+{sity}&page={i}",
-                                                elements=self._datapackage['Xpath']['link']).get_element()
+            for i in self.pagination_check():
+                element = RequestsParsingMethod(
+                    url=f"https://hh.ru/search/vacancy?text={self._subprofession}+{sity}&page={i}",
+                    elements=self._datapackage['Xpath']['link']).get_element()
                 col = col + element
+                if element != "Нет элементов":
+                    break
             links[sity] = col
             logging.warning(links)
             yield links
+
 
 class LinkCollectionAggregatorSJ(LinkCollectionAggregatorAbstract):
     def __init__(self, subprofession: str, datapackage: dict):
         self._subprofession = subprofession
         self._datapackage = datapackage
 
+    @staticmethod
+    def pagination_check():
+        for i in range(1, 100):
+            page = i
+            yield page
+
+    def getting_links(self) -> dict:
+        for sity in self._datapackage["sity"]:
+            links = {}
+            col = []
+            for i in self.pagination_check():
+                element = RequestsParsingMethod(
+                    url=f"https://www.superjob.ru/vacancy/search/?keywords={self._subprofession}+{sity}&page={i}",
+                    elements=self._datapackage['Xpath']['link']).get_element()
+                col = col + [f"https://www.superjob.ru{i}" for i in  element]
+                if element != "Нет элементов":
+                    break
+            links[sity] = col
+            logging.warning(links)
+            yield links
+
+
 class LinkCollectionAggregatorRR(LinkCollectionAggregatorAbstract):
     def __init__(self, subprofession: str, datapackage: dict):
         self._subprofession = subprofession
         self._datapackage = datapackage
+
+    @staticmethod
+    def pagination_check():
+        for i in range(1, 100):
+            page = i
+            yield page
+
+    def getting_links(self) -> dict:
+        for sity in self._datapackage["sity"]:
+            links = {}
+            col = []
+            for i in self.pagination_check():
+                element = RequestsParsingMethod(
+                    url=f"https://www.rabota.ru/vacancy/?query={self._subprofession}+{sity}&page={i}",
+                    elements=self._datapackage['Xpath']['link']).get_element()
+                col = col + [f"https://www.rabota.ru{i}" for i in element]
+                if element != "Нет элементов":
+                    break
+            links[sity] = col
+            logging.warning(links)
+            yield links
+
 
 class InformationAggregatorAbstract(ABC):
     @abstractmethod
@@ -73,15 +124,23 @@ class Aggregator():
         for i in self._subprofessions:
             self.SET_aggregators[i] = [
                 LinkCollectionAggregatorHH(i, self._datapackage.get("hh")).getting_links(),
-                # LinkCollectionAggregatorSJ(i,self._datapackage),
-                # LinkCollectionAggregatorRR(i,self._datapackage),
+                LinkCollectionAggregatorSJ(i, self._datapackage.get("sj")).getting_links(),
+                LinkCollectionAggregatorRR(i, self._datapackage.get("rabotars")).getting_links(),
             ]
+
     def get_links(self):
         for i, n in self.SET_aggregators.items():
-            link_colectors = {i: {"hh": {list(hh_data.keys())[0]: list(hh_data.values())[0]},
-                                "sj": {list(sj_data.key())[0]: list(sj_data.values())[0]},
-                                "rr": {list(rr_data.key())[0]: list(rr_data.values())[0]}} for hh_data,sj_data,rr_data in n[0],n[1],n[2]}
+            logging.warning(n)
+            link_colectors = {f"{i}":{}}
+            for num_sity in range(1,len(self._datapackage["hh"]["sity"])):
+                hh = next(n[0])
+                sj = next(n[1])
+                rr = next(n[2])
+                link_colectors[i] = {f"{list(hh.keys())[0]}":{"hh":list(hh.values())}}
+                logging.warning(link_colectors)
+        link_colectors = {f"{i}":[n[0],n[1],n[2]]}
         return link_colectors
+
     def get_info(self):
         pass
 
@@ -91,7 +150,6 @@ class Aggregator():
             links = self.get_links()
         else:
             links = self.get_links()
-
 
     def __repr__(self):
         return f"{self._profession}"

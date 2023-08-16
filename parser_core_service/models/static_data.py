@@ -19,7 +19,6 @@ with Session(engine) as ses:
             ses.add(d)
             ses.commit()
 
-
     def service_data():
         d = {"hh":"https://hh.ru/", "sj":"https://www.superjob.ru/", "rabotars":"https://www.rabota.ru/"}
         for i,n in d.items():
@@ -27,15 +26,17 @@ with Session(engine) as ses:
             ses.add(n)
             ses.commit()
     def get_data_search_links():
-        d = ParserElement(name_element = "link",  Xpath = """/html/body/div/div/div/div/div/div/div/main/div/div/div/div/div/div/h3/span/a/@href""", serviece  = 1)
-        p = ParserElement(name_element="page_number",
-                          Xpath="""/html/body/div/div/div/div/div/div/div/main/div/div/span/span/a/span html/body/div[5]/div/div[3]/div[1]/div[1]/div[3]/div[2]/main/div[5]/div/span[5]/a""",
-                          serviece=1)
-        p = ParserElement(name_element="page_number",
-                          Xpath="""/html/body/div[5]/div/div[3]/div[1]/div[1]/div[3]/div[2]/main/div[5]/div/span[5]/a""",
-                          serviece=1)
-        ses.add(d)
-        # ses.add(p)
+        link_hh = ParserElement(name_element = "link",  Xpath = """/html/body/div/div/div/div/div/div/div/main/div/div/div/div/div/div/h3/span/a/@href""", serviece  = 1)
+        link_sj = ParserElement(name_element="link",
+                          Xpath="""/html/body/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div[1]/div/div/span/a/@href""",
+                          serviece=2)
+        link_rru = ParserElement(name_element="link",
+                          Xpath="""/html/body/div/div/div/div/div/div/div/div/div/div/div/div/div/main/div/div/div/div/div/article/div/div/div[1]/header/h3/a/@href""",
+                          serviece=3)
+
+        ses.add(link_hh)
+        ses.add(link_sj)
+        ses.add(link_rru)
         ses.commit()
 
     def get_data_sity():
@@ -49,10 +50,12 @@ with Session(engine) as ses:
 
 
 if __name__ == "__main__":
-    # service_data()
-    # prof_data()
+
+    service_data()
+    prof_data()
     get_data_search_links()
-    # get_data_sity()
+    get_data_sity()
+
 
 
 

@@ -23,10 +23,6 @@ class Controller():
         for i in self.set_aggregators:
             d = i.get_links()
             logging.warning(d)
-            # with open("file.txt","w") as file:
-            #     file.write(d)
-
-
 
     def removal_aggregator(self):
         pass

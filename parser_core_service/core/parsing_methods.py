@@ -2,7 +2,7 @@ from abc import ABC,abstractmethod
 import logging
 import random
 import requests
-from bs4 import BeautifulSouppip
+from bs4 import BeautifulSoup
 from lxml import etree
 import http.client
 
@@ -73,8 +73,9 @@ class RequestsParsingMethod():
     def get_element(self):
         with requests.get(self._url, headers=headers, cookies=cookies, stream=True, proxies={"http": random.choice(proxies_list)}) as page:
             soup = BeautifulSoup(page.content, "html.parser")
+            logging.warning(self._url)
+            logging.warning(page.status_code)
             dom = etree.HTML(str(soup))
-
             page.close()
         for i in self._elements:
             try:
@@ -82,6 +83,7 @@ class RequestsParsingMethod():
             except:
                 list_element = dom.xpath(i)
                 logging.warning(list_element)
+
             if list_element == []:
                  list_element.append("Нет элементов")
             elif list_element[0] == None:
