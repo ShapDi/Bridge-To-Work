@@ -50,7 +50,6 @@ with Session(engine) as ses:
 
 
 if __name__ == "__main__":
-
     service_data()
     prof_data()
     get_data_search_links()

@@ -2,7 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from .engines import engine
 
-from .create_schema import ParserElement, Service, Professions, Subprofessions, SityNames,LinkBase
+from .create_schema import ParserElement, Service, Professions, Subprofessions, SityNames,Link
 
 
 def get_session():
@@ -48,8 +48,7 @@ def get_data_profession(session = get_session()):
 
 
 def get_coll_prof(session = get_session()):
-    stmt =  select(LinkBase.link).except_all()
-
+    stmt =  select(Link.link).except_all()
 
 
 if __name__ == "__main__":

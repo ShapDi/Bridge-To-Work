@@ -73,17 +73,15 @@ class RequestsParsingMethod():
     def get_element(self):
         with requests.get(self._url, headers=headers, cookies=cookies, stream=True, proxies={"http": random.choice(proxies_list)}) as page:
             soup = BeautifulSoup(page.content, "html.parser")
-            logging.warning(self._url)
-            logging.warning(page.status_code)
             dom = etree.HTML(str(soup))
             page.close()
+            logging.warning(self._url)
+            elements = []
         for i in self._elements:
             try:
                 list_element = (list(map(lambda i: i.text, (dom.xpath(i)))))
             except:
                 list_element = dom.xpath(i)
-                logging.warning(list_element)
-
             if list_element == []:
                  list_element.append("Нет элементов")
             elif list_element[0] == None:
@@ -91,6 +89,7 @@ class RequestsParsingMethod():
                 break
             else:
                 break
+            elements.append(i)
         return list_element
 
 
