@@ -26,9 +26,10 @@ class DataRecording():
         sub_pg = list(self._data.keys())[0]
         print(sub_pg)
         sity = list(self._data[f"{sub_pg}"].keys())[0]
-        print(sub_pg)
+        print(sity)
         for sevice,links in self._data[f'{sub_pg}'][f'{sity}'].items() :
-            for link in links:
+            for link in links[0]:
+                print(link)
                 link = Link(subprofessions = sub_pg, сity = sity,link = link, service_id = self.get_idsevices(sevice))
                 session.add(link)
         session.commit()

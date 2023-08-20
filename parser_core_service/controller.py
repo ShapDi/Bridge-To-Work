@@ -4,8 +4,6 @@ from models.data_recording import DataRecording
 from models.typical_requests import get_data_package, get_data_profession
 from core.aggregator import Aggregator
 
-
-
 class Controller():
     set_aggregators = []
 
@@ -23,15 +21,15 @@ class Controller():
     def start_aggregator(self):
         for i in self.set_aggregators:
             for n in i.get_links():
-                DataRecording(n).saving_link()
                 with open("new.txt","w") as file:
                     file.write(str(n))
+                DataRecording(n).saving_link()
 
     def removal_aggregator(self):
         pass
 
 
-def main():
+def start_controller():
     # get_data_profession(),
     core_comtroller = Controller(get_data_profession(),get_data_package(), session=True)
     core_comtroller.initialization_aggregator()
@@ -39,6 +37,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    start_controller()
 
 

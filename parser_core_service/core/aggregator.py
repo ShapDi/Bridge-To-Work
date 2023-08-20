@@ -40,11 +40,10 @@ class Aggregator():
                 hh = next(n[0])
                 sj = next(n[1])
                 rr = next(n[2])
-                link_colectors[i] = {f"{list(hh.keys())[0]}":{"hh":list(hh.values())}}
+                link_colectors[i] = {f"{list(hh.keys())[0]}":{"hh":list(hh.values()),"sj":list(sj.values()),"rabotars":list(rr.values())}}
                 logging.warning(link_colectors)
-                # link_colectors = {f"{i}":[n[0],n[1],n[2]]}
                 logging.warning(link_colectors)
-            yield link_colectors
+                yield link_colectors
 
     def get_info(self):
         pass

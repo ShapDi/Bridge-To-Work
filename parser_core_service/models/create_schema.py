@@ -38,7 +38,7 @@ class Service(Base):
 class Link(Base):
     __tablename__ = "link"
     id: Mapped[int] = mapped_column(primary_key = True)
-    link: Mapped[str] = mapped_column(String(255))
+    link: Mapped[str] = mapped_column(String(1000))
     subprofessions: Mapped[str] = mapped_column(String(40))
     сity: Mapped[str] = mapped_column(String(80))
     service_id: Mapped[int] = mapped_column(ForeignKey("services.id"))
@@ -79,7 +79,7 @@ class Professions(Base):
 
 
 def main():
-    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
 
 if __name__ == "__main__":
     main()
