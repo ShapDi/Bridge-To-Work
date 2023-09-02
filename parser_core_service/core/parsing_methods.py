@@ -63,6 +63,7 @@ headers = {
     'user-agent': UserAgent().random,
 }
 
+class Collector():pass
 
 class RequestsParsingMethod():
     def __init__(self, url:str, elements:list):

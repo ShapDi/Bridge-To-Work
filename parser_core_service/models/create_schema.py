@@ -39,8 +39,8 @@ class Link(Base):
     __tablename__ = "link"
     id: Mapped[int] = mapped_column(primary_key = True)
     link: Mapped[str] = mapped_column(String(1000))
-    subprofessions: Mapped[str] = mapped_column(String(40))
-    сity: Mapped[str] = mapped_column(String(80))
+    subprofessions: Mapped[int] = mapped_column(ForeignKey("subprofessions.id"))
+    сity: Mapped[int] = mapped_column(ForeignKey("сity_collection.id"))
     service_id: Mapped[int] = mapped_column(ForeignKey("services.id"))
 class Vacancy(Base):
     __tablename__ = "vacancy"

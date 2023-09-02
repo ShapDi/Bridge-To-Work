@@ -18,12 +18,15 @@ class Controller():
         for i in self.set_aggregators:
             i.initialization_agregators()
 
-    def start_aggregator(self):
+    def aggregator_link(self):
         for i in self.set_aggregators:
             for n in i.get_links():
                 with open("new.txt","w") as file:
                     file.write(str(n))
                 DataRecording(n).saving_link()
+            yield
+    def start_aggregator(self):
+       pass
 
     def removal_aggregator(self):
         pass
