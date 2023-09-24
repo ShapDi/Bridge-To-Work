@@ -3,7 +3,7 @@ import json
 from sqlalchemy.orm import Session
 
 from engines import engine
-from create_schema import Subprofessions, Professions, ParserElement, Service, SityNames
+from create_schema import Subprofessions, Professions, ParserElement, Service, SityNames, DeclensionsСity
 
 with open("date/professions.json") as file:
     date = json.load(file)
@@ -46,6 +46,7 @@ with Session(engine) as ses:
             d = SityNames(name = i)
             ses.add(d)
         ses.commit()
+
 
 
 

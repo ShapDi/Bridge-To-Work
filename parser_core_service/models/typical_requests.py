@@ -48,7 +48,7 @@ def get_data_profession(session = get_session()):
 
 
 def get_coll_prof(session = get_session()):
-    stmt =  select(Link.link).except_all()
+    stmt = select(Link.link).except_all()
 
 
 if __name__ == "__main__":

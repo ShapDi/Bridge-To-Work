@@ -24,19 +24,18 @@ class Controller():
                 with open("new.txt","w") as file:
                     file.write(str(n))
                 DataRecording(n).saving_link()
-            yield
-    def start_aggregator(self):
-       pass
+
+    def aggregator_vacancies(self):
+        pass
 
     def removal_aggregator(self):
         pass
 
 
 def start_controller():
-    # get_data_profession(),
     core_comtroller = Controller(get_data_profession(),get_data_package(), session=True)
     core_comtroller.initialization_aggregator()
-    core_comtroller.start_aggregator()
+    core_comtroller.aggregator_link()
 
 
 if __name__ == "__main__":

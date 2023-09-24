@@ -10,7 +10,7 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
 
-from .engines import engine
+from engines import engine
 
 
 class Base(DeclarativeBase):
@@ -76,6 +76,13 @@ class Professions(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(255))
     subprofessions: Mapped[list["Subprofessions"]] = relationship(back_populates="profession")
+
+
+class DeclensionsСity(Base):
+    __tablename__ = "declensions_сity"
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(255))
+    сity_id: Mapped[int] = mapped_column(ForeignKey("сity_collection.id"))
 
 
 def main():
