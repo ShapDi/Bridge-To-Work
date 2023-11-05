@@ -1,8 +1,11 @@
 from abc import ABC, abstractmethod
 
-from core.accumulation_links import LinkCollectionAggregatorHH, LinkCollectionAggregatorSJ, LinkCollectionAggregatorRR
-from .parsing_methods import RequestsParsingMethod
 import logging
+
+from core.accumulation_links import LinkCollectionAggregatorHH, LinkCollectionAggregatorSJ, LinkCollectionAggregatorRR
+from core.accumulation_vacancies import InformationAggregatorHH, InformationAggregatorSJ, InformationAggregatorRR
+from .parsing_methods import RequestsParsingMethod
+
 
 
 class Сleaner():
@@ -15,11 +18,14 @@ class Сleaner():
 
 
 class Aggregator():
-    SET_aggregatorbehavior = [LinkCollectionAggregatorHH, LinkCollectionAggregatorSJ, LinkCollectionAggregatorRR]
-    SET_infoaggregatorbehavior = []
+    SET_aggregatorbehavior = [LinkCollectionAggregatorHH,
+                              LinkCollectionAggregatorSJ,
+                              LinkCollectionAggregatorRR]
+
     SET_aggregators = {}
 
-    def __init__(self, profession: str, subprofessions: list, datapackage: dict):
+    def __init__(self, name:str, profession:str, subprofessions:list, datapackage:dict):
+        self._name = name
         self._profession = profession
         self._subprofessions = subprofessions
         self._datapackage = datapackage
@@ -57,6 +63,8 @@ class Aggregator():
 
     def __repr__(self):
         return f"{self._profession}"
+
+
 
 
 if __name__ == "__main__":

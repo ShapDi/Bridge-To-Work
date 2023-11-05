@@ -1,20 +1,20 @@
-from pydantic import BaseModel
+
+@dataclass
+class DataServiceVacancy():
+    hh:DataParsingElements
+    superjob:DataParsingElements
+    rabota_ru:DataParsingElements
+@dataclass
+class DataParsingElements():
+    name:str
+    experience:str
+    pay:str
+    employment:str
+    schedule:str
+    text:str
+    publication:str
+    city:str
 
 
-class DataServiceСollection(BaseModel):
-    hh:dict
-    superjob:dict
-    rabota_ru:dict
-
-
-class DataServiceLink(BaseModel):
-    xpath:dict
-    sity: dict
-
-
-class DataServiceVacancy(BaseModel):
-    link:str
-    xpath:dict
-    sity: str
 
 

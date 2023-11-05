@@ -5,7 +5,6 @@ class LinkCollectionAggregatorAbstract(ABC):
     @abstractmethod
     def getting_links(self): pass
 
-
 class LinkCollectionAggregatorHH(LinkCollectionAggregatorAbstract):
     def __init__(self, subprofession: str, datapackage: dict):
         self._subprofession = subprofession

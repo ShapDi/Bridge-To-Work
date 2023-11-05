@@ -8,7 +8,7 @@ import http.client
 
 from fake_useragent import UserAgent
 
-#
+
 
 proxies_list = ["https://Jc1U5I:WsGlBIzjnq@45.89.19.63:19382", "https://Jc1U5I:WsGlBIzjnq@45.89.19.89:12254"]
 
@@ -83,23 +83,14 @@ class RequestsParsingMethod():
                 list_element = (list(map(lambda i: i.text, (dom.xpath(i)))))
             except:
                 list_element = dom.xpath(i)
-            if list_element == []:
-                 list_element.append("Нет элементов")
-            elif list_element[0] == None:
-                list_element[0] = "Нет элементов"
-                break
-            else:
-                break
             elements.append(i)
         return list_element
 
 
 
-class APIParsingMethod():
-    pass
+class APIParsingMethod():pass
 
-class SeleniumParsingMethod():
-    pass
+class SeleniumParsingMethod():pass
 
 
 

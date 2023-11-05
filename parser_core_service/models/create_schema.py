@@ -9,10 +9,10 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 
-
-from engines import engine
-
-
+if __name__ == '__main__':
+    from engines import engine
+else:
+    from engines import engine
 class Base(DeclarativeBase):
     pass
 
@@ -25,7 +25,7 @@ class ParserElement(Base):
 
 
 class SityNames(Base):
-    __tablename__ = "сity_collection"
+    __tablename__ = "cities"
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(40))
 
@@ -36,21 +36,21 @@ class Service(Base):
     name: Mapped[str] = mapped_column(String(100))
 
 class Link(Base):
-    __tablename__ = "link"
+    __tablename__ = "links"
     id: Mapped[int] = mapped_column(primary_key = True)
     link: Mapped[str] = mapped_column(String(1000))
     subprofessions: Mapped[int] = mapped_column(ForeignKey("subprofessions.id"))
-    сity: Mapped[int] = mapped_column(ForeignKey("сity_collection.id"))
+    сity: Mapped[int] = mapped_column(ForeignKey("cities.id"))
     service_id: Mapped[int] = mapped_column(ForeignKey("services.id"))
 class Vacancy(Base):
-    __tablename__ = "vacancy"
+    __tablename__ = "vacancys"
     id: Mapped[int] = mapped_column(primary_key=True)
     name:Mapped[str] = mapped_column(String(40))
     link: Mapped[str] = mapped_column(String(255))
     experience:Mapped[str] = mapped_column(String(30))
     pay:Mapped[int]
     country:Mapped[str] = mapped_column(String(50))
-    сity:Mapped[str] = mapped_column(String(50))
+    сity:Mapped[int] = mapped_column(ForeignKey("cities.id"))
     employment:Mapped[str] = mapped_column(String(50))
     schedule:Mapped[str] = mapped_column(String(50))
     Text:Mapped[str]
@@ -78,11 +78,11 @@ class Professions(Base):
     subprofessions: Mapped[list["Subprofessions"]] = relationship(back_populates="profession")
 
 
-class DeclensionsСity(Base):
-    __tablename__ = "declensions_сity"
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String(255))
-    сity_id: Mapped[int] = mapped_column(ForeignKey("сity_collection.id"))
+# class DeclensionsСity(Base):
+#     __tablename__ = "declensions_сity"
+#     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+#     name: Mapped[str] = mapped_column(String(255))
+#     сity_id: Mapped[int] = mapped_column(ForeignKey("сity_collection.id"))
 
 
 def main():
