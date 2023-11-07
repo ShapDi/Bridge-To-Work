@@ -12,7 +12,10 @@ from sqlalchemy.orm import relationship
 if __name__ == '__main__':
     from engines import engine
 else:
-    from engines import engine
+    from .engines import engine
+
+
+
 class Base(DeclarativeBase):
     pass
 
@@ -90,3 +93,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+

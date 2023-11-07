@@ -3,9 +3,13 @@ import redis
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from engines import engine
 
-from create_schema import ParserElement, Service, Professions, Subprofessions, SityNames, Link
+from models.create_schema import Service, ParserElement, SityNames, Professions, Subprofessions, Link
+
+if __name__ == '__main__':
+    from engines import engine
+else:
+    from .engines import engine
 
 
 def get_session():
@@ -41,20 +45,23 @@ def get_data_package(session = get_session()) -> dict:
     print(package)
     return package
 
-
+def get_data_sity(session = get_session()):
+    stmt = select(SityNames).except_all()
+    for prof in session.execute(stmt).all():
+        yield prof
 def get_data_profession(session = get_session()):
     package = {}
-    stmt = select(Professions.name, Subprofessions.name).join_from(Professions, Subprofessions).except_all()
-    for i in session.execute(stmt).all():
-        if package.get(i[0]) == None:
-            package[i[0]] = [i[1]]
-        else:
-            n = package.get(i[0])
-            n.append(i[1])
-            package[i[0]] = n
-    return package
+    stmt = select(Subprofessions.id, Subprofessions.name).join_from(Professions, Subprofessions).except_all()
+    for prof in session.execute(stmt).all():
+        yield prof
 
 
+# if package.get(i[0]) == None:
+#     package[i[0]] = [i[1]]
+# else:
+#     n = package.get(i[0])
+#     n.append(i[1])
+#     package[i[0]] = n
 def link_vac(subprofession, session = get_session()):
     stmt = select(Link.link).join_from(Link, Subprofessions).where(Subprofessions.name == subprofession).except_all()
     print(session.execute(stmt).all())

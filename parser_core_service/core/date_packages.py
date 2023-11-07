@@ -1,11 +1,6 @@
-
+from dataclasses import dataclass
 @dataclass
-class DataServiceVacancy():
-    hh:DataParsingElements
-    superjob:DataParsingElements
-    rabota_ru:DataParsingElements
-@dataclass
-class DataParsingElements():
+class DataParsingElements:
     name:str
     experience:str
     pay:str
@@ -15,6 +10,16 @@ class DataParsingElements():
     publication:str
     city:str
 
+@dataclass
+class DataServiceVacancy():
+    hh:DataParsingElements
+    sj:DataParsingElements
+    rr:DataParsingElements
 
 
+@dataclass
+class DataServicelink():
+    hh:str
+    sj:str
+    rr:str
 

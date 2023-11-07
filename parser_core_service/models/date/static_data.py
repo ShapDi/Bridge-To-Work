@@ -66,12 +66,12 @@ def add_job_search_data(session = get_session()):
         session.add(rr)
     session.commit()
 
-# if __name__ == "__main__":
-#     service_data()
-#     prof_data()
-#     get_data_search_links()
-#     get_data_sity()
-#     add_job_search_data()
+if __name__ == "__main__":
+    service_data()
+    prof_data()
+    # get_data_search_links()
+    get_data_sity()
+    add_job_search_data()
 #
 #
 

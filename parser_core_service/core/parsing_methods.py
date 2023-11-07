@@ -63,6 +63,8 @@ headers = {
     'user-agent': UserAgent().random,
 }
 
+
+
 class Collector():pass
 
 class RequestsParsingMethod():
@@ -72,18 +74,21 @@ class RequestsParsingMethod():
 
 
     def get_element(self):
+        print(self._elements)
         with requests.get(self._url, headers=headers, cookies=cookies, stream=True, proxies={"http": random.choice(proxies_list)}) as page:
             soup = BeautifulSoup(page.content, "html.parser")
             dom = etree.HTML(str(soup))
             page.close()
             logging.warning(self._url)
             elements = []
-        for i in self._elements:
             try:
-                list_element = (list(map(lambda i: i.text, (dom.xpath(i)))))
+                list_element = (list(map(lambda i: self._elements.text, (dom.xpath(self._elements)))))
+                print(list_element)
             except:
-                list_element = dom.xpath(i)
-            elements.append(i)
+                list_element = dom.xpath(self._elements)
+                print(list_element)
+            elements.append(self._elements)
+            print(elements)
         return list_element
 
 
