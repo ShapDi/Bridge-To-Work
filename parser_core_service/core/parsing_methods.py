@@ -1,4 +1,4 @@
-from abc import ABC,abstractmethod
+from abc import ABC, abstractmethod
 import logging
 import random
 import requests
@@ -8,11 +8,7 @@ import http.client
 
 from fake_useragent import UserAgent
 
-
-
 proxies_list = ["https://Jc1U5I:WsGlBIzjnq@45.89.19.63:19382", "https://Jc1U5I:WsGlBIzjnq@45.89.19.89:12254"]
-
-
 
 cookies = {
     'hhuid': 'D3UFMNbHr7x4p2Q23WErzQ--',
@@ -64,42 +60,64 @@ headers = {
 }
 
 
+class Collector(): pass
 
-class Collector():pass
 
 class RequestsParsingMethod():
-    def __init__(self, url:str, elements:list):
+    def __init__(self, url: str):
         self._url = url
-        self._elements = elements
 
-
-    def get_element(self):
-        print(self._elements)
-        with requests.get(self._url, headers=headers, cookies=cookies, stream=True, proxies={"http": random.choice(proxies_list)}) as page:
+    def get_element(self, element):
+        print(element)
+        with requests.get(self._url,
+                          headers = headers,
+                          cookies = cookies,
+                          stream = True,
+                          proxies = {"http": random.choice(proxies_list)}) as page:
             soup = BeautifulSoup(page.content, "html.parser")
             dom = etree.HTML(str(soup))
             page.close()
             logging.warning(self._url)
             elements = []
             try:
-                list_element = (list(map(lambda i: self._elements.text, (dom.xpath(self._elements)))))
+                list_element = (list(map(lambda i: element.text, (dom.xpath(element)))))
                 print(list_element)
             except:
-                list_element = dom.xpath(self._elements)
+                list_element = dom.xpath(element)
                 print(list_element)
-            elements.append(self._elements)
+            elements.append(element)
             print(elements)
         return list_element
 
+    def get_elements(self, elements:dict):
+        print(elements)
+        with requests.get(self._url,
+                          headers = headers,
+                          cookies = cookies,
+                          stream = True,
+                          proxies = {"http": random.choice(proxies_list)}) as page:
+            soup = BeautifulSoup(page.content, "html.parser")
+            dom = etree.HTML(str(soup))
+            page.close()
+            logging.warning(self._url)
+            dict_elements = {}
+            for key, value in elements.items():
+                try:
+                    list_element = (list(map(lambda i: value.text, (dom.xpath(value)))))
+                    dict_elements[key] = dom.xpath(list_element)
+                except:
+                    data = dom.xpath(value)
+                    if not data :
+                        dict_elements[key] = dom.xpath(value)
+                    else:
+                        dict_elements[key] = dom.xpath(value)[0].text
+                    print(value)
+
+                print(dict_elements)
+            return dict_elements
 
 
-class APIParsingMethod():pass
-
-class SeleniumParsingMethod():pass
+class APIParsingMethod(): pass
 
 
-
-
-
-
-
+class SeleniumParsingMethod(): pass

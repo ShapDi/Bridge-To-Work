@@ -56,7 +56,7 @@ class ControllerVacancies:
         self._data_package = data_package
 
     def get_job_data_collection(self, service: str, link: str):
-        return self.SERVICE_STRATEGIES[service](self._data_package, link).get_data()
+        return self.SERVICE_STRATEGIES[service](link = link, datapackage = self._data_package.hh).get_data()
 
     def __str__(self):
         return self._name

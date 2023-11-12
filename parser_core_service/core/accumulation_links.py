@@ -52,8 +52,7 @@ class LinkCollectionAggregatorHH(LinkCollectionAggregatorAbstract):
         coll = []
         for i in self.pagination_check():
             element = RequestsParsingMethod(
-            url=f"https://hh.ru/search/vacancy?text={self._request}&page={i}",
-            elements=self._datalink.hh).get_element()
+            url=f"https://hh.ru/search/vacancy?text={self._request}&page={i}",).get_element(self._datalink.hh)
             coll= coll + element
             if element != "Нет элементов":
                 break

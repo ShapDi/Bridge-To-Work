@@ -4,10 +4,11 @@ class DataParsingElements:
     name:str
     experience:str
     pay:str
-    employment:str
+    time_job:str
     schedule:str
     text:str
-    publication:str
+    publication_date:str
+    education:str
     city:str
 
 @dataclass

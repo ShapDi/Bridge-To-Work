@@ -107,6 +107,7 @@ def get_links_rr(session = get_session()):
 
 def get_job_search_data(session = get_session()):
     with redis.Redis() as cache:
+        cache.delete('job_search_data')
         job_search_data = cache.get('job_search_data')
         if job_search_data is not None:
             return json.loads(job_search_data)
