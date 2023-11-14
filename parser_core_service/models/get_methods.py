@@ -88,7 +88,7 @@ def get_coll_prof(session = get_session()):
 
 
 def get_links_hh(session = get_session()):
-    links = select(Link.link, Service.id, Service.name).join_from(Link, Service).where(Service.name == 'hh')
+    links = select(Link.link, Service.id, Service.name,Link.сity,Link.subprofessions).join_from(Link, Service).where(Service.name == 'hh')
     for link in session.execute(links).all():
         yield link
 

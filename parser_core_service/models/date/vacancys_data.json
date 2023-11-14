@@ -1,15 +1,15 @@
 {
   "hh": {
-    "name":"/html/body/div[5]/div/div[3]/div[1]/div/div/div/div/div/div[1]/div[1]/div/div[1]/h1",
+    "name":"/html/body/div/div/div/div[1]/div/div/div/div/div/div[1]/div[1]/div/div[1]/h1",
     "link":"/html/body/div/div/div/div/div/div/div/main/div/div/div/div/div/div/h3/span/a",
-    "experience":"/html/body/div[5]/div/div[3]/div[1]/div/div/div/div/div/div[1]/div[1]/div/p[1]",
-    "pay":"/html/body/div[5]/div/div[3]/div[1]/div/div/div/div/div/div[1]/div[1]/div/div[1]/div[2]",
-    "city":"/html/body/div[5]/div/div[4]/div[1]/div/div/div/div/div[1]/div[4]/div/div[1]/div[1]/div/p/font",
-    "time_job":"/html/body/div[5]/div/div[3]/div[1]/div/div/div/div/div/div[1]/div[1]/div/p[2]",
-    "schedule":"/html/body/div[5]/div/div[3]/div[1]/div/div/div/div/div/div[3]/div/div/div[1]/div/ul[5]/li[3]",
-    "text":"/html/body/div[4]/div/div[4]/div[1]/div/div ",
-    "publication_date":"/html/body/div[5]/div/div[3]/div[1]/div/div/div/div/div/div[4]/div/div[1]/div[1]/div/p/span",
-    "education":"/html/body/div[5]/div/div[3]/div[1]/div/div/div/div/div/div[1]/div[1]/div/p[1]"
+    "experience":"/html/body/div/div/div/div[1]/div/div/div/div/div/div[1]/div[1]/div/p[1]/span",
+    "pay":"/html/body/div/div/div/div/div/div/div/div/div/div[1]/div[1]/div/div[1]/div[2]/span/text()[2]",
+    "city":"/html/body/div/div/div/div/div/div/div/div/div/div[5]/div/div[1]/div[1]/div/p/text()[3]",
+    "time_job":"/html/body/div/div/div/div[1]/div/div/div/div/div/div[1]/div[1]/div/p[2]/span",
+    "schedule":"/html/body/div/div/div/div[1]/div/div/div/div/div/div[1]/div[1]/div/p[2]/text()[1]",
+    "text":"//*[@id=\"HH-React-Root\"]/div/div[4]/div[1]/div/div/div/div/div/div[4]/div/div/div[1]/div",
+    "publication_date":"/html/body/div/div/div/div/div/div/div/div/div/div[5]/div/div[1]/div[1]/div/p/span",
+    "education":"/html/body/div/div/div/div/div/div/div/div/div/div[5]/div/div[1]/div[1]/div/p/text()[3]"
   },
   "sj": {
     "name":"/html/body/div[3]/div/div[1]/div[4]/div/div/div/div[1]/div[1]/div/div[2]/div[1]/div/div[2]/div[1]/div[1]/h1",

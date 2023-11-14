@@ -8,7 +8,7 @@ import http.client
 
 from fake_useragent import UserAgent
 
-proxies_list = ["https://Jc1U5I:WsGlBIzjnq@45.89.19.63:19382", "https://Jc1U5I:WsGlBIzjnq@45.89.19.89:12254"]
+# proxies_list = ["https://Jc1U5I:WsGlBIzjnq@45.89.19.63:19382", "https://Jc1U5I:WsGlBIzjnq@45.89.19.89:12254"]
 
 cookies = {
     'hhuid': 'D3UFMNbHr7x4p2Q23WErzQ--',
@@ -67,13 +67,14 @@ class RequestsParsingMethod():
     def __init__(self, url: str):
         self._url = url
 
+    # proxies = {"http": random.choice(proxies_list)}
+    # proxies = {"http": random.choice(proxies_list)}
     def get_element(self, element):
-        print(element)
         with requests.get(self._url,
                           headers = headers,
                           cookies = cookies,
                           stream = True,
-                          proxies = {"http": random.choice(proxies_list)}) as page:
+                          ) as page:
             soup = BeautifulSoup(page.content, "html.parser")
             dom = etree.HTML(str(soup))
             page.close()
@@ -81,39 +82,48 @@ class RequestsParsingMethod():
             elements = []
             try:
                 list_element = (list(map(lambda i: element.text, (dom.xpath(element)))))
-                print(list_element)
+
             except:
                 list_element = dom.xpath(element)
-                print(list_element)
+
             elements.append(element)
-            print(elements)
+
         return list_element
 
     def get_elements(self, elements:dict):
-        print(elements)
+
         with requests.get(self._url,
                           headers = headers,
                           cookies = cookies,
                           stream = True,
-                          proxies = {"http": random.choice(proxies_list)}) as page:
+                          ) as page:
             soup = BeautifulSoup(page.content, "html.parser")
             dom = etree.HTML(str(soup))
-            page.close()
+
             logging.warning(self._url)
             dict_elements = {}
             for key, value in elements.items():
+
                 try:
-                    list_element = (list(map(lambda i: value.text, (dom.xpath(value)))))
+                    try:
+                        list_element = (list(map(lambda i: value.text, (dom.xpath(value)))))
+
+                    except:
+                        list_element = (list(map(lambda i: value, (dom.xpath(value)))))
+
                     dict_elements[key] = dom.xpath(list_element)
                 except:
                     data = dom.xpath(value)
-                    if not data :
+                    if not data:
                         dict_elements[key] = dom.xpath(value)
-                    else:
-                        dict_elements[key] = dom.xpath(value)[0].text
-                    print(value)
 
-                print(dict_elements)
+                    else:
+                        try:
+                            dict_elements[key] = dom.xpath(value)[0].text
+
+                        except:
+                            dict_elements[key] = dom.xpath(value)[0]
+
             return dict_elements
 
 

@@ -50,7 +50,7 @@ rr_data = DataParsingElements(name = rr_data['name'].get('Xpath'),
 # link_data = data['hh'].get('link').get('Xpath')
 # link_data = data['sj'].get('link').get('Xpath')
 # link_data = data['rr'].get('link').get('Xpath')
-
+# #
 # data_package_link = DataServicelink(hh = data['hh'].get('link').get('Xpath'), sj = data['sj'].get('link').get('Xpath'), rr = data['rr'].get('link').get('Xpath'))
 
 data_package = DataServiceVacancy(hh = hh_data, sj = sj_data, rr = rr_data)
@@ -73,8 +73,8 @@ def get_vacant():
     #     yield ['sj',base_controller_vacancies.get_job_data_collection(service = 'sj', link = sj_link.link)]
     # for rr_link in get_links_rr():
     #     yield ['rr',base_controller_vacancies.get_job_data_collection(service = 'rr', link = rr_link.link)]
-    #
+
 
 
 for i in get_vacant():
-    print(i)
+    add_link()
