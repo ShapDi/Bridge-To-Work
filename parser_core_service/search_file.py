@@ -10,7 +10,9 @@ from models.get_methods import get_data_profession
 
 
 
-
+# with redis.Redis(host = '46.19.65.112', port = '6379', password = '15426378') as red:
+#     red.set('key', 312313)
+#     print(red.get('key'))
 
 
 
